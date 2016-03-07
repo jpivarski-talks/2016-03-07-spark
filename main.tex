@@ -61,7 +61,7 @@ I've been keeping three options open:
 \item ROOT C++ as an external process: of course this should work, and I've been putting my efforts here so that we at least have a working baseline. I'm using Avro to stream data from the ROOT process to the JVM process. Avro is an efficient binary format with bindings in many languages.
 \end{enumerate}
 
-I'm further considering a merger of options \#2 and \#3: in addition to the Avro bridge, we could run ROOT as an external process with data transferred via shared memory. (Non-garbage collected ``off-heap'' memory in Java, a technique used by high-frequency traders.)
+I'm further considering a merger of options \#2 and \#3: in addition to the Avro bridge, we could run ROOT as an external process with data transferred via shared memory (``off-heap,'' a technique used by high-frequency traders.)
 
 \end{frame}
 
