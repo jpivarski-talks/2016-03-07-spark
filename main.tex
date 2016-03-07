@@ -44,25 +44,24 @@ This doesn't mean that users must use Java (I use a mix of Scala and Python), bu
 
 \begin{block}{Methods}
 I've been keeping three options open:
-\begin{itemize}
+\begin{enumerate}
 \item Pure Java using FreeHEP (reimplementation of ROOT in Java by Tony Johnson).
 \item Direct ROOT C++ $\to$ JVM connection with JNI (or an abstraction layer on top of it, such as JNA).
 \item ROOT C++ as an external process, passing serialized data through a pipe.
-\end{itemize}
+\end{enumerate}
 \end{block}
 \end{frame}
 
 \begin{frame}{Status}
-\begin{itemize}
+\begin{enumerate}
 \item Pure Java using FreeHEP: works, but I have concerns about its efficiency for non-local files (e.g. xrootd). When all three options are ready, this method should be featured in a performance study.
 
 \item Direct ROOT C++ $\to$ JVM: this now works as well. The random segmentation faults I was experiencing were related to interference between ROOT's signal handlers and Java's signal handlers.
 
 \item ROOT C++ as an external process: of course this should work, and I've been putting my efforts here so that we at least have a working baseline. I'm using Avro to stream data from the ROOT process to the JVM process. Avro is an efficient binary format with bindings in many languages.
-\end{itemize}
+\end{enumerate}
 
-
-
+I'm further considering a merger of options \#2 and \#3: in addition to the Avro bridge, we could run ROOT as an external process with data transferred via shared memory. (Non-garbage collected ``off-heap'' memory in Java, a technique used by high-frequency traders.)
 
 \end{frame}
 
