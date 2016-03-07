@@ -38,7 +38,7 @@
 
 \begin{frame}{Strategy}
 \begin{block}{Scope}
-Spark is just one big data technology, but almost all of them share a common difficulty: the data backbone is implemented in the Java Virtual Machine (JVM).
+Spark is just one big data technology, but almost all of them share a common difficulty: the data backbone is implemented in the Java Virtual Machine (JVM) and ROOT is C++.
 
 \vspace{0.2 cm}
 This doesn't mean that users must use Java (I use a mix of Scala and Python), but it does mean that data must be efficiently converted into a JVM-friendly format to be used at a large scale.
@@ -70,8 +70,37 @@ I'm further considering a merger of options \textcolor{darkblue}{\#2} and \textc
 What have I actually been doing?
 
 \vspace{0.2 cm}
+Consuming the entire ROOT data model and providing the appropriate translations to Avro. Required for both \textcolor{darkblue}{\#2} and \textcolor{darkblue}{\#3}.
 
+\begin{itemize}
+\item Simple primitive branches (TLeaf).
+\item Primitive arrays, multidimensional arrays preserving substructure: e.g.\ ``{\tt Double32\_t fMatrix[4][4]}'' becomes a four-element array containing four-element arrays of numbers.
+\item Primitive arrays with an external counter variable, such as {\tt fNTracks}.
+\item STL vectors (and maps? does ROOT use {\tt std::map}?).
+\item User-defined classes, such as the {\tt Event} example, CMSSW data with FWLite, ART data with the appropriate libraries.
+\item Pointers as nullable objects: e.g.\ ``{\tt Double32\_t *fClosestDistance}'' becomes ``{\tt ["null", "double"]},'' a value that could be null ({\tt None} in Python) or a number.
+\end{itemize}
 
+\vspace{0.2 cm}
+(See \url{https://github.com/diana-hep/root2avro}.)
+\end{frame}
+
+\begin{frame}[fragile]{How do I expect users to use this?}
+This is infrastructure necessary to make an efficient Spark InputRDD. The user can use Spark directly, PySpark, or SparkR as he or she sees fit. However,
+
+\begin{itemize}
+\item For big jobs, like ntuple-skimming (my target use-case), they'll find Spark's JVM-to-Python bridge (Py4J) to be a source of inefficiency.
+
+\vspace{0.2 cm}
+It would be much more efficient to do
+\begin{verbatim}
+dataset.filter(event => event.numMuons >= 2  &&
+                        event.muons(2).pT > 20)
+\end{verbatim}
+on the Scala side before attempting heavy interactive analysis in Python. (Note the difference in syntax above.)
+
+\item If analysts really need one language for everything, it wouldn't be hard to provide a Jython skin over native Spark, to be used only for big datasets (skimming).
+\end{itemize}
 \end{frame}
 
 \end{document}
