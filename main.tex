@@ -45,14 +45,15 @@ This doesn't mean that users must use Java (I use a mix of Scala and Python), bu
 \begin{block}{Methods}
 I've been keeping three options open:
 \begin{itemize}
-\item Pure Java using FreeHEP: this works, but I have concerns about its efficiency for non-local files (e.g. xrootd). Will be featured in a performance study when the other methods are ready.
-
-\item 
-
-
+\item Pure Java using FreeHEP (reimplementation of ROOT in Java by Tony Johnson).
+\item Direct ROOT C++ $\to$ JVM connection with JNI (or an abstraction layer on top of it, such as JNA).
+\item ROOT C++ as an external process, passing serialized data through a pipe.
 \end{itemize}
 \end{block}
 
 \end{frame}
 
 \end{document}
+
+
+% : this works, but I have concerns about its efficiency for non-local files (e.g. xrootd). Will be featured in a performance study when the other methods are ready.
