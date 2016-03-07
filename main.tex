@@ -23,6 +23,8 @@
 \institute{Princeton Univeristy --- DIANA}
 \date{March 7, 2016}
 
+\xdefinecolor{darkblue}{rgb}{0.1,0.1,0.7}
+
 \begin{document}
 
 \begin{frame}
@@ -61,7 +63,14 @@ I've been keeping three options open:
 \item ROOT C++ as an external process: of course this should work, and I've been putting my efforts here so that we at least have a working baseline. I'm using Avro to stream data from the ROOT process to the JVM process. Avro is an efficient binary format with bindings in many languages.
 \end{enumerate}
 
-I'm further considering a merger of options \#2 and \#3: in addition to the Avro bridge, we could run ROOT as an external process with data transferred via shared memory (``off-heap,'' a technique used by high-frequency traders.)
+I'm further considering a merger of options \textcolor{darkblue}{\#2} and \textcolor{darkblue}{\#3}: in addition to the Avro bridge, we could run ROOT as an external process with data transferred via shared memory (``off-heap,'' a technique used by high-frequency traders).
+\end{frame}
+
+\begin{frame}{Status, continued}
+What have I actually been doing?
+
+\vspace{0.2 cm}
+
 
 \end{frame}
 
